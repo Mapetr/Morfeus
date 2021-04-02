@@ -11,14 +11,13 @@ module.exports = {
             data.isPlaying = false;
             data.skipped = true;
             data.dispatcher.end();
+            console.log(`Skipped!`).then(msg => { msg.delete({ timeout: 10000 }) });
             if (data.queue !== null && data.queue !== undefined && data.queue !== '[]') {
-                console.log('skip');
                 play.playSong(data.queue[0], data.voiceChannel);
                 data.queue.splice(0, 1);
             } else {
-                console.log('leave');
                 data.voiceChannel.leave();
-                data.queue = null;
+                data.queue = [];
                 data.isPlaying = false;
                 data.nowPlaying = null;
                 data.dispatcher = null;

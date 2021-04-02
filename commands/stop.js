@@ -9,12 +9,13 @@ module.exports = {
         if (data.isPlaying) {
             data.dispatcher.end();
             data.voiceChannel.leave();
-            data.queue = null;
+            data.queue = [];
             data.isPlaying = false;
             data.nowPlaying = null;
             data.dispatcher = null;
             data.loopSong = false;
             data.loopQueue = false;
+            message.channel.send(`Stopped!`).then(msg => { msg.delete({ timeout: 15000 }) });
         }
 	},
 };

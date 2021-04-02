@@ -13,6 +13,8 @@ module.exports = {
       loopSong: false,
       loopQueue: false,
       skipped: false,
+      msgChannel: null,
+      isPlaylist: false
     };
   },
 };
