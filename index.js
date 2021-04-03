@@ -14,7 +14,10 @@ module.exports = {
       loopQueue: false,
       skipped: false,
       msgChannel: null,
-      isPlaylist: false
+      isPlaylist: false,
+      page: null,
+      spotifyDispatcher: false,
+      isSpotify: false
     };
   },
 };
@@ -31,13 +34,12 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
 client.on('message', message => {
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
+    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot || message.channel === Discord.DMChannel) return;
     const args = message.content.slice(process.env.PREFIX.length).trim().split(' ');
     const commandName = args.shift().toLowerCase();
 

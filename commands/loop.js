@@ -6,10 +6,11 @@ module.exports = {
     cooldown: 1,
     aliases: [],
 	execute(message, args) {
-        data.loopSong = !data.loopSong;
-        if (data.loopSong) {
+        if (!data.loopSong) {
+            data.loopSong = true;
             message.reply(`Looping the song!`).then(msg => { msg.delete({ timeout: 15000 }) });
         } else {
+            data.loopSong = false;
             message.reply(`Stopped looping the song`).then(msg => { msg.delete({ timeout: 15000 }) });
         }
 	},

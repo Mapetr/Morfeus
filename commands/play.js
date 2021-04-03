@@ -30,7 +30,7 @@ module.exports = {
 	name: 'play',
     description: 'Play a song!',
     cooldown: 1,
-    aliases: [],
+    aliases: ['youtube'],
     async playSong(url, voiceChannel) {
         let dispatcher;
         let info;
@@ -93,7 +93,8 @@ module.exports = {
         });
     },
     async execute(message, args) {
-        if (args === []) {
+        console.log(args);
+        if (args == []) {
             message.reply(`You have to give me a link to a youtube video!`);
             return;
         }
