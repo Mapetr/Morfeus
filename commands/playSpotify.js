@@ -18,6 +18,7 @@ module.exports = {
     cooldown: 1,
     aliases: ['spotify'],
     async execute(message, args) {
+        if (message.author.id !== "295506815586664449") return;
         try {
             const voiceChannel = message.member.voice.channel;
             if (voiceChannel) {
