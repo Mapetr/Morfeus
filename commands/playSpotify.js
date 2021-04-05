@@ -44,7 +44,7 @@ module.exports = {
                 data.isPlaying = true;
                 const browser = await launch({ headless: false, executablePath: "/usr/bin/google-chrome-stable" });
                 const page = await browser.newPage();
-                await page.goto(`file://${path.join(__dirname, `../src/index.html`)}`, { waitUntil: 'domcontentloaded' });
+                await page.goto(`file://${path.join(__dirname, `../src/index.html`)}`, { headless: true, waitUntil: 'domcontentloaded' });
                 const stream = await getStream(page, { audio: true, video: false });
                 const dispatcher = await connection.play(stream, { highWaterMark: 50 });
                 await page.waitForTimeout(3000);
