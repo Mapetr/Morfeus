@@ -44,7 +44,7 @@ module.exports = {
                 data.isPlaying = true;
                 const browser = await launch({ headless: false, executablePath: "/usr/bin/google-chrome-stable" });
                 const page = await browser.newPage();
-                await page.goto(`file://${path.join(__dirname, `../src/index.html`)}`, { headless: true, waitUntil: 'domcontentloaded' });
+                await page.goto(/*`file://${path.join(__dirname, `../src/index.html`)}`,*/`https://open.spotify.com`, { headless: true, waitUntil: 'domcontentloaded' });
                 const stream = await getStream(page, { audio: true, video: false });
                 const dispatcher = await connection.play(stream, { highWaterMark: 50 });
                 await page.waitForTimeout(3000);
@@ -56,7 +56,7 @@ module.exports = {
                 });
                 if (args > 3) return;
 
-                if (args[0] === 'song') {
+                /*if (args[0] === 'song') {
                     await axios({
                         baseURL: `https://api.spotify.com/v1/me/player/play?&device_id=${info[1]}`,
                         method: 'put',
@@ -94,7 +94,7 @@ module.exports = {
                     
                 } else {
                     message.reply('Use "song" or "playlist" as your first parameter').then((msg) => { msg.delete({ timeout: 15000 }) });
-                }
+                }*/
             } else {
                 message.reply('Join a voice channel first!');
             }
