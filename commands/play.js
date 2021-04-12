@@ -82,6 +82,10 @@ module.exports = {
             if (data.loopSong) {
                 data.isPlaying = false;
                 this.playSong(data.nowPlaying, voiceChannel);
+            } else if (data.queue !== []) {
+                data.isPlaying = false;
+                this.playSong(data.queue[0], voiceChannel);
+                data.queue.shift();
             } else {
                 leave(voiceChannel);
             }

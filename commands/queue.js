@@ -6,7 +6,7 @@ module.exports = {
     cooldown: 1,
     aliases: [],
 	execute(message, args) {
-		if (data.queue === []) {
+		if (data.queue !== []) {
 			message.reply(data.queue).then(msg => { msg.delete({ timeout: 15000 }) });
 		} else {
 			message.reply(`The queue is empty!`).then(msg => { msg.delete({ timeout: 15000 }) });
