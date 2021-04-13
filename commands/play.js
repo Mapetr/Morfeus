@@ -81,12 +81,15 @@ module.exports = {
         dispatcher.on('finish', () => {
             if (data.loopSong) {
                 data.isPlaying = false;
+                console.log('looped song');
                 this.playSong(data.nowPlaying, voiceChannel);
-            } else if (data.queue !== []) {
+            } else if (data.queue !== [] && data.queue !== null && data.queue !== undefined) {
                 data.isPlaying = false;
+                console.log('queue next');
                 this.playSong(data.queue[0], voiceChannel);
                 data.queue.shift();
             } else {
+                console.log('end');
                 leave(voiceChannel);
             }
         });
