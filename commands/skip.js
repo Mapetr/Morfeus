@@ -11,7 +11,7 @@ module.exports = {
             data.isPlaying = false;
             data.skipped = true;
             data.dispatcher.end();
-            console.log(`Skipped!`).then(msg => { msg.delete({ timeout: 10000 }) });
+            message.channel.send(`Skipped!`).then(msg => { msg.delete({ timeout: 10000 }) });
             if (data.queue !== null && data.queue !== undefined && data.queue !== '[]') {
                 play.playSong(data.queue[0], data.voiceChannel);
                 data.queue.splice(0, 1);

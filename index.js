@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const fs = require('fs');
+const client = new Discord.Client();
 
 module.exports = {
   constructor() {
@@ -17,12 +18,11 @@ module.exports = {
       isPlaylist: false,
       page: null,
       spotifyDispatcher: false,
-      isSpotify: false
+      isSpotify: false,
     };
   },
 };
 
-const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 
@@ -35,7 +35,8 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-	console.log('Ready!');
+  console.log('Ready!');
+  client.user.setActivity('!', { type: 'WATCHING' });
 });
 
 client.on('message', message => {
@@ -66,7 +67,7 @@ client.on('message', message => {
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     try {
-	    command.execute(message, args);
+	    command.execute(message, args, client);
     } catch (error) {
         console.error(error);
     }

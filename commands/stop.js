@@ -5,7 +5,7 @@ module.exports = {
     description: 'Stop the music!',
     cooldown: 1,
     aliases: [],
-	execute(message, args) {
+	execute(message, args, client) {
         if (data.isPlaying) {
             data.dispatcher.end();
             data.voiceChannel.leave();
@@ -15,6 +15,7 @@ module.exports = {
             data.dispatcher = null;
             data.loopSong = false;
             data.loopQueue = false;
+            client.user.setActivity('!', { type: 'WATCHING' });
             message.channel.send(`Stopped!`).then(msg => { msg.delete({ timeout: 15000 }) });
         }
 	},
