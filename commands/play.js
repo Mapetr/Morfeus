@@ -3,6 +3,8 @@ const ytdl = require('ytdl-core-discord');
 const ytpl = require('ytpl');
 const data = require('../index').constructor;
 
+const bannedWords = ['cum', 'cuming', 'cumming', 'porn', 'moans', 'moan', 'moaning', 'hours', 'sex', 'scream', 'screams', 'screaming', 'earrape', 'nigger', 'nigga', 'negr', 'fuck', 'fucking'];
+
 let client;
 
 function leave(voiceChannel) {
@@ -45,6 +47,12 @@ module.exports = {
             url = items[0].shortUrl;
         }
         info = await ytdl.getBasicInfo(url);
+        for (let i = 0; i < bannedWords; i++) {
+            if (info.player_response.videoDetails.title.toLowerCase().includes(bannedWords[i])) {
+                leave(voiceChannel);
+                return;
+            }
+        }
         if (!data.isPlaying) {
             try {
                 const connection = await voiceChannel.join();
