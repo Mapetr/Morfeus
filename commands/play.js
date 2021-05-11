@@ -3,7 +3,7 @@ const ytdl = require('ytdl-core-discord');
 const ytpl = require('ytpl');
 const data = require('../index').constructor;
 
-const bannedWords = ['cum', 'cuming', 'cumming', 'porn', 'moans', 'moan', 'moaning', 'hours', 'sex', 'scream', 'screams', 'screaming', 'earrape', 'nigger', 'nigga', 'negr', 'fuck', 'fucking'];
+const bannedWords = ['cum', 'cuming', 'cumming', 'porn', 'moans', 'moan', 'moaning', 'hours', 'sex', 'scream', 'screams', 'screaming', 'earrape', 'nigger', 'nigga', 'negr', 'fuck', 'fucking', 'screams', 'scream'];
 
 let client;
 
