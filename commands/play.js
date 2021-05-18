@@ -100,9 +100,11 @@ module.exports = {
         });
     },
     async execute(message, args, globalClient) {
-        console.log(args);
         if (args == []) {
             message.reply(`You have to give me a link to a youtube video!`);
+            return;
+        }
+        if (message.author.id === '743722973604741181' || message.author.id === '804790994486820874') {
             return;
         }
         const voiceChannel = message.member.voice.channel;
