@@ -60,7 +60,6 @@ module.exports = {
 		playing = 1;
 		module.exports.player = player;
 		module.exports.connection = connection;
-		interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
 		await interaction.editReply({ content: `Currently playing: ${info.videoDetails.title}` });
 		await wait(25000);
 		await interaction.deleteReply();
