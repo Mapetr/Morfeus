@@ -7,6 +7,7 @@ const { server } = require('../index.js');
 module.exports = {
 	play: play,
 	stop: stop,
+	skip: skip,
 };
 
 async function play(interaction) {
@@ -54,9 +55,13 @@ async function connect(user, construct) {
 		player: player,
 		resource: null,
 	};
+	construct.songs = {
+		nowPlaying: '',
+		songs: [],
+	};
 }
 
-async function start(url, interaction, construct) {
+async function start(interaction, url, construct) {
 	const info = await ytdl.getBasicInfo(url);
 	construct.connector.resource = createAudioResource(await ytdl(url, { highWaterMark: 1 << 25, filter: 'audioonly' }));
 	construct.connector.connection.subscribe(construct.connector.player);
@@ -77,9 +82,17 @@ async function destroy(interaction, construct) {
 
 async function addQueue(interaction, construct, url) {
 	const info = await ytdl.getBasicInfo(url);
-	construct.songs = {
-		nowPlaying: info.videoDetails.title,
-		songs: [],
-	};
 	construct.songs.songs.push(url);
+	await interaction.editReply({ content: `Added to queue ${info.videoDetails.title}` });
+	await wait(25000);
+	await interaction.deleteReply();
+}
+
+async function skip(interaction) {
+	const construct = server.get(interaction.member.guild.id);
+	const songs = construct.songs.songs;
+	if (songs.length > 0) {
+		const url = songs.shift();
+		start(interaction, url, construct);
+	}
 }
