@@ -56,13 +56,6 @@ async function stop(interaction) {
 	await interaction.deleteReply();
 }
 
-async function skip(interaction) {
-	server.get(server.get(interaction.member.guild.id).queue);
-	await interaction.editReply({ content: 'Skipped!' });
-	await wait(25000);
-	await interaction.deleteReply();
-}
-
 async function connect(user, construct) {
 	const connection = joinVoiceChannel({
 		channelId: user.voice.channelId,
@@ -120,5 +113,11 @@ async function skip(interaction) {
 	if (songs.length > 0) {
 		const url = songs.shift();
 		start(interaction, url, construct);
+		await interaction.editReply({ content: 'Skipped!' });
+		await wait(25000);
+		await interaction.deleteReply();
 	}
+	await interaction.editReply({ content: 'Theres nothing else in queue!' });
+	await wait(25000);
+	await interaction.deleteReply();
 }
