@@ -1,6 +1,5 @@
 const ytdl = require('ytdl-core-discord');
-// eslint-disable-next-line no-unused-vars
-const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior, StreamType } = require('@discordjs/voice');
+const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
 const wait = require('util').promisify(setTimeout);
 const { server } = require('../index.js');
 
