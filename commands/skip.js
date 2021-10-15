@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { stop } = require('../modules/music.js');
+const { skip } = require('../modules/music.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('stop')
-		.setDescription('Stops music'),
+		.setName('skip')
+		.setDescription('Skip a song'),
 	async execute(interaction) {
-		stop(interaction);
+		skip(interaction);
 	},
 };

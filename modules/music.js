@@ -7,6 +7,7 @@ const { server } = require('../index.js');
 module.exports = {
 	play: play,
 	stop: stop,
+	skip: skip,
 };
 
 async function play(interaction) {
@@ -30,12 +31,36 @@ async function play(interaction) {
 		return;
 	}
 	connect(user, construct);
-	start(url, interaction, construct);
+	const title = start(url, interaction, construct);
+	await interaction.editReply({ content: `Currently playing: ${title}` });
+	await wait(25000);
+	await interaction.deleteReply();
+	construct.connector.player.on(AudioPlayerStatus.Idle, async () => {
+		const queue = construct.queue;
+		if (queue.length != 0) {
+			await wait(5000);
+			start(queue[0].url, interaction, construct);
+			return;
+		}
+		destroy(interaction, construct);
+	});
+	construct.connector.player.on('error', error => {
+		console.error(error);
+	});
 }
 
-function stop(interaction) {
+async function stop(interaction) {
 	destroy(interaction, server.get(interaction.member.guild.id));
-	interaction.editReply({ content: 'Stopped playing!' });
+	await interaction.editReply({ content: 'Stopped playing!' });
+	await wait(25000);
+	await interaction.deleteReply();
+}
+
+async function skip(interaction) {
+	server.get(server.get(interaction.member.guild.id).queue);
+	await interaction.editReply({ content: 'Skipped!' });
+	await wait(25000);
+	await interaction.deleteReply();
 }
 
 async function connect(user, construct) {
@@ -54,17 +79,19 @@ async function connect(user, construct) {
 		player: player,
 		resource: null,
 	};
+	construct.songs = {
+		nowPlaying: '',
+		songs: [],
+	};
 }
 
-async function start(url, interaction, construct) {
+async function start(interaction, url, construct) {
 	const info = await ytdl.getBasicInfo(url);
-	construct.connector.resource = createAudioResource(await ytdl(url, { highWaterMark: 1 << 25, filter: 'audioonly' }));
+	construct.connector.resource = createAudioResource(await ytdl(url, { highWaterMark: 1024 * 1024 * 10, filter: 'audioonly' }));
 	construct.connector.connection.subscribe(construct.connector.player);
 	construct.connector.player.play(construct.connector.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
-	await interaction.editReply({ content: `Currently playing: ${info.videoDetails}` });
-	await wait(25000);
-	await interaction.deleteReply();
+	return info.videoDetails.title;
 }
 
 async function destroy(interaction, construct) {
@@ -77,9 +104,21 @@ async function destroy(interaction, construct) {
 
 async function addQueue(interaction, construct, url) {
 	const info = await ytdl.getBasicInfo(url);
-	construct.songs = {
-		nowPlaying: info.videoDetails.title,
-		songs: [],
+	const queue = {
+		url: url,
+		title: info.videoDetails.title,
 	};
-	construct.songs.songs.push(url);
+	construct.queue.push(queue);
+	await interaction.editReply({ content: `Added to queue ${info.videoDetails.title}` });
+	await wait(10000);
+	await interaction.deleteReply();
+}
+
+async function skip(interaction) {
+	const construct = server.get(interaction.member.guild.id);
+	const songs = construct.songs.songs;
+	if (songs.length > 0) {
+		const url = songs.shift();
+		start(interaction, url, construct);
+	}
 }
