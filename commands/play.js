@@ -1,8 +1,7 @@
 /* eslint-disable prefer-const */
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior, StreamType } = require('@discordjs/voice');
+const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
 const ytdl = require('ytdl-core');
-const ytdlplayer = require('ytdl-core-discord');
 const wait = require('util').promisify(setTimeout);
 // const { queue, player, connection } = require('../helper.js');
 
