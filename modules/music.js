@@ -1,4 +1,4 @@
-const ytdl = require('ytdl-core-discord');
+const ytdl = require('discord-ytdl-core');
 const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
 const wait = require('util').promisify(setTimeout);
 const { server } = require('../index.js');
@@ -12,7 +12,7 @@ module.exports = {
 async function play(interaction) {
 	const user = await interaction.member;
 	const url = interaction.options.getString('url');
-	const construct = server.get(user.guild.id);
+	let construct = server.get(user.guild.id);
 	if (user.voice.channelId == null) {
 		await interaction.editReply({ content: 'Connect to a voice channel!' });
 		await wait(15000);
@@ -25,25 +25,29 @@ async function play(interaction) {
 		await interaction.deleteReply();
 		return;
 	}
-	if (construct.connector.player != null) {
-		addQueue(interaction, construct, url);
+	if (construct != undefined) {
+		addQueue(interaction, url);
 		return;
 	}
-	connect(user, construct);
-	const title = start(url, interaction, construct);
+	connect(user);
+	let title = await start(interaction, url);
 	await interaction.editReply({ content: `Currently playing: ${title}` });
 	await wait(25000);
 	await interaction.deleteReply();
-	construct.connector.player.on(AudioPlayerStatus.Idle, async () => {
-		const queue = construct.queue;
-		if (queue.length != 0) {
-			await wait(5000);
-			start(queue[0].url, interaction, construct);
-			return;
+	construct = server.get(user.guild.id);
+	construct.player.on(AudioPlayerStatus.Idle, async () => {
+		const songs = construct.queue;
+		console.log(songs);
+		if (songs.length > 0) {
+			title = await start(interaction, songs[0]);
+			songs.shift();
+			await interaction.editReply({ content: '' });
+			await wait(25000);
+			await interaction.deleteReply();
 		}
-		destroy(interaction, construct);
+		destroy(interaction);
 	});
-	construct.connector.player.on('error', error => {
+	construct.player.on('error', error => {
 		console.error(error);
 	});
 }
@@ -55,7 +59,7 @@ async function stop(interaction) {
 	await interaction.deleteReply();
 }
 
-async function connect(user, construct) {
+async function connect(user) {
 	const connection = joinVoiceChannel({
 		channelId: user.voice.channelId,
 		guildId: user.guild.id,
@@ -66,35 +70,35 @@ async function connect(user, construct) {
 			noSubscriber: NoSubscriberBehavior.Stop,
 		},
 	});
-	construct.connector = {
+	const connector = {
 		connection: connection,
 		player: player,
 		resource: null,
+		queue: [],
 	};
-	construct.songs = {
-		nowPlaying: '',
-		songs: [],
-	};
+	server.set(user.guild.id, connector);
 }
 
-async function start(interaction, url, construct) {
+async function start(interaction, url) {
+	const construct = server.get(interaction.member.guild.id);
 	const info = await ytdl.getBasicInfo(url);
-	construct.connector.resource = createAudioResource(await ytdl(url, { highWaterMark: 1024 * 1024 * 10, filter: 'audioonly' }));
-	construct.connector.connection.subscribe(construct.connector.player);
-	construct.connector.player.play(construct.connector.resource);
+	construct.resource = createAudioResource(ytdl(url, { highWaterMark: 1024 * 1024 * 25, filter: 'audioonly' }));
+	construct.connection.subscribe(construct.player);
+	construct.player.play(construct.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
 	return info.videoDetails.title;
 }
 
-async function destroy(interaction, construct) {
-	const connector = construct.connector;
-	connector.player.stop();
-	connector.connection.destroy();
+async function destroy(interaction) {
+	const construct = server.get(interaction.member.guild.id);
+	construct.player.stop();
+	construct.connection.destroy();
 	construct.delete(interaction.member.guild.id);
 	interaction.client.user.setActivity('/play', { type: 'WATCHING' });
 }
 
-async function addQueue(interaction, construct, url) {
+async function addQueue(interaction, url) {
+	const construct = server.get(interaction.member.guild.id);
 	const info = await ytdl.getBasicInfo(url);
 	const queue = {
 		url: url,
@@ -108,15 +112,18 @@ async function addQueue(interaction, construct, url) {
 
 async function skip(interaction) {
 	const construct = server.get(interaction.member.guild.id);
-	const songs = construct.songs.songs;
+	const songs = construct.queue;
+	console.log(songs);
 	if (songs.length > 0) {
-		const url = songs.shift();
-		start(interaction, url, construct);
+		start(interaction, songs[0]);
+		songs.shift();
 		await interaction.editReply({ content: 'Skipped!' });
 		await wait(25000);
 		await interaction.deleteReply();
+		return;
 	}
 	await interaction.editReply({ content: 'Theres nothing else in queue!' });
 	await wait(25000);
 	await interaction.deleteReply();
+	destroy();
 }
