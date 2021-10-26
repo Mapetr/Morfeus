@@ -29,7 +29,7 @@ jobs:
     - run: yarn add nexe
     - run: nexe -i index.js -o Morfeus.out -t linux-x64-14.15.3
     - name: Upload a build artifact
-      uses: actions/upload-artifact@2.2.4
+      uses: actions/upload-artifact@v2
       with:
         name: Built program
         path: ./Morfeus.out
