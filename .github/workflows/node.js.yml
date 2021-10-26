@@ -31,5 +31,5 @@ jobs:
     - name: Upload a build artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Built program
+        name: Linux x64 build
         path: ./Morfeus.out
