@@ -6,6 +6,9 @@
   "repository": "https://github.com/Mapetr/Morfeus.git",
   "author": "Petr Mácha <info@mapetr.cz>",
   "license": "MIT",
+  "scripts": {
+    "build": "nexe -i index.js -o Morfeus.out -t linux-x64-14.15.3"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/opus": "^0.6.0",

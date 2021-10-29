@@ -1,4 +1,4 @@
-const ytdl = require('discord-ytdl-core');
+const ytdl = require('ytdl-core-discord');
 const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
 const wait = require('util').promisify(setTimeout);
 const { server } = require('../index.js');
@@ -30,22 +30,16 @@ async function play(interaction) {
 		return;
 	}
 	connect(user);
-	let title = await start(interaction, url);
-	await interaction.editReply({ content: `Currently playing: ${title}` });
-	await wait(25000);
-	await interaction.deleteReply();
+	await start(interaction, url);
 	construct = server.get(user.guild.id);
 	construct.player.on(AudioPlayerStatus.Idle, async () => {
 		const songs = construct.queue;
 		console.log(songs);
 		if (songs.length > 0) {
-			title = await start(interaction, songs[0]);
+			await start(interaction, songs[0]);
 			songs.shift();
-			await interaction.editReply({ content: '' });
-			await wait(25000);
-			await interaction.deleteReply();
 		}
-		destroy(interaction);
+		await destroy(interaction);
 	});
 	construct.player.on('error', error => {
 		console.error(error);
@@ -53,7 +47,7 @@ async function play(interaction) {
 }
 
 async function stop(interaction) {
-	destroy(interaction, server.get(interaction.member.guild.id));
+	await destroy(interaction, server.get(interaction.member.guild.id));
 	await interaction.editReply({ content: 'Stopped playing!' });
 	await wait(25000);
 	await interaction.deleteReply();
@@ -82,11 +76,13 @@ async function connect(user) {
 async function start(interaction, url) {
 	const construct = server.get(interaction.member.guild.id);
 	const info = await ytdl.getBasicInfo(url);
-	construct.resource = createAudioResource(ytdl(url, { highWaterMark: 1024 * 1024 * 25, filter: 'audioonly' }));
+	construct.resource = createAudioResource(await ytdl(url, { highWaterMark: 1 << 25, filter: 'audioonly' }));
 	construct.connection.subscribe(construct.player);
 	construct.player.play(construct.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
-	return info.videoDetails.title;
+	await interaction.editReply({ content: `Currently playing: ${info.videoDetails.title}` });
+	await wait(25000);
+	await interaction.deleteReply();
 }
 
 async function destroy(interaction) {
