@@ -89,7 +89,7 @@ async function destroy(interaction) {
 	const construct = server.get(interaction.member.guild.id);
 	construct.player.stop();
 	construct.connection.destroy();
-	construct.delete(interaction.member.guild.id);
+	server.delete(interaction.member.guild.id);
 	interaction.client.user.setActivity('/play', { type: 'WATCHING' });
 }
 

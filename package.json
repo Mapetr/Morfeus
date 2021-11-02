@@ -7,7 +7,7 @@
   "author": "Petr Mácha <info@mapetr.cz>",
   "license": "MIT",
   "scripts": {
-    "build": "nexe -i index.js -o Morfeus.out -t linux-x64-14.15.3"
+    "build": "./node_modules/.bin/pkg -t latest index.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
@@ -22,6 +22,7 @@
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "libsodium-wrappers": "^0.7.9",
+    "pkg": "^5.4.1",
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.7",
     "ytdl-core": "^4.9.1",
