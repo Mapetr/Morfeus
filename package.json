@@ -6,17 +6,24 @@
   "repository": "https://github.com/Mapetr/Morfeus.git",
   "author": "Petr Mácha <info@mapetr.cz>",
   "license": "MIT",
+  "scripts": {
+    "build": "./node_modules/.bin/pkg -t latest index.js"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/opus": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
+    "ansi-regex": "5.0.1",
+    "bufferutil": "^4.0.5",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "libsodium-wrappers": "^0.7.9",
+    "pkg": "^5.4.1",
     "sodium": "^3.0.2",
+    "utf-8-validate": "^5.0.7",
     "ytdl-core": "^4.9.1",
     "ytdl-core-discord": "amishshah/ytdl-core-discord#dependabot/npm_and_yarn/ytdl-core-4.9.0"
   },
