@@ -80,9 +80,10 @@ async function start(interaction, url) {
 	construct.connection.subscribe(construct.player);
 	construct.player.play(construct.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
-	await interaction.editReply({ content: `Currently playing: ${info.videoDetails.title}` });
-	await wait(25000);
-	await interaction.deleteReply();
+	await interaction.channel.send({ content: `Currently playing: ${info.videoDetails.title}` })
+		.then(msg => {
+			setTimeout(() => msg.delete(), 25000);
+		});
 }
 
 async function destroy(interaction) {
@@ -113,13 +114,15 @@ async function skip(interaction) {
 	if (songs.length > 0) {
 		start(interaction, songs[0]);
 		songs.shift();
-		await interaction.editReply({ content: 'Skipped!' });
-		await wait(25000);
-		await interaction.deleteReply();
+		await interaction.channel.send({ content: 'Skipped!' })
+			.then(msg => {
+				setTimeout(() => msg.delete(), 25000);
+			});
 		return;
 	}
-	await interaction.editReply({ content: 'Theres nothing else in queue!' });
-	await wait(25000);
-	await interaction.deleteReply();
+	await interaction.channel.send({ content: 'Nothing else in queue' })
+		.then(msg => {
+			setTimeout(() => msg.delete(), 25000);
+		});
 	destroy();
 }
