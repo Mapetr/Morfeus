@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const ytdl = require('ytdl-core');
-const { getQueue } = require('./play.js');
+const { server } = require('../index.js');
 
 String.prototype.toHHMMSS = function() {
 	const sec_num = parseInt(this, 10);
@@ -24,7 +24,7 @@ module.exports = {
 		.setName('queue')
 		.setDescription('Shows the queue'),
 	async execute(interaction) {
-		const queue = getQueue();
+		const queue = server.get(interaction.member.guild.id);
 		let result = '';
 		let info;
 		if (queue == []) {
@@ -32,7 +32,7 @@ module.exports = {
 			return;
 		}
 		queue.forEach(async (url) => {
-			info = await ytdl.getInfo(url);
+			info = await ytdl.getBasicInfo(url);
 			console.log(`${url} ${info}`);
 			result = result + `${info.videoDetails.title} [${info.videoDetails.lengthSeconds.toHHMMSS()}]\n`;
 		});

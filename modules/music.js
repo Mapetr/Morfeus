@@ -12,7 +12,7 @@ module.exports = {
 async function play(interaction) {
 	const user = await interaction.member;
 	const url = interaction.options.getString('url');
-	let construct = server.get(user.guild.id);
+	const construct = server.get(user.guild.id);
 	if (user.voice.channelId == null) {
 		await interaction.editReply({ content: 'Connect to a voice channel!' });
 		await wait(15000);
@@ -31,12 +31,11 @@ async function play(interaction) {
 	}
 	connect(user);
 	await start(interaction, url);
-	construct = server.get(user.guild.id);
 	construct.player.on(AudioPlayerStatus.Idle, async () => {
 		const songs = construct.queue;
 		console.log(songs);
 		if (songs.length > 0) {
-			await start(interaction, songs[0]);
+			await start(interaction, songs[0].url);
 			songs.shift();
 		}
 		await destroy(interaction);
@@ -110,9 +109,8 @@ async function addQueue(interaction, url) {
 async function skip(interaction) {
 	const construct = server.get(interaction.member.guild.id);
 	const songs = construct.queue;
-	console.log(songs);
 	if (songs.length > 0) {
-		start(interaction, songs[0]);
+		start(interaction, songs[0].url);
 		songs.shift();
 		await interaction.channel.send({ content: 'Skipped!' })
 			.then(msg => {
