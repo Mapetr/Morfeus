@@ -28,18 +28,18 @@ module.exports = {
 		let result = '';
 		let info;
 		if (queue == []) {
-			interaction.editReply({ content: 'Nothing in queue' });
+			await interaction.reply({ content: 'Nothing in queue' });
 			return;
 		}
-		queue.forEach(async (url) => {
+		for (const url of queue) {
 			info = await ytdl.getBasicInfo(url);
 			console.log(`${url} ${info}`);
 			result = result + `${info.videoDetails.title} [${info.videoDetails.lengthSeconds.toHHMMSS()}]\n`;
-		});
+		}
 		if (result == '') {
 			console.error('Tried to send empty string');
 			return;
 		}
-		interaction.editReply({ content: result });
+		await interaction.reply({ content: result });
 	},
 };

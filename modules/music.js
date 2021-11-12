@@ -14,13 +14,13 @@ async function play(interaction) {
 	const url = interaction.options.getString('url');
 	const construct = server.get(user.guild.id);
 	if (user.voice.channelId == null) {
-		await interaction.editReply({ content: 'Connect to a voice channel!' });
+		await interaction.reply({ content: 'Connect to a voice channel!' });
 		await wait(15000);
 		await interaction.deleteReply();
 		return;
 	}
 	if (!ytdl.validateURL(url)) {
-		await interaction.editReply({ content: 'Wrong URL' });
+		await interaction.reply({ content: 'Wrong URL' });
 		await wait(15000);
 		await interaction.deleteReply();
 		return;
@@ -29,25 +29,13 @@ async function play(interaction) {
 		addQueue(interaction, url);
 		return;
 	}
-	connect(user);
-	await start(interaction, url);
-	construct.player.on(AudioPlayerStatus.Idle, async () => {
-		const songs = construct.queue;
-		console.log(songs);
-		if (songs.length > 0) {
-			await start(interaction, songs[0].url);
-			songs.shift();
-		}
-		await destroy(interaction);
-	});
-	construct.player.on('error', error => {
-		console.error(error);
-	});
+	await connect(user);
+	await start(interaction, url).catch(err => console.error(err));
 }
 
 async function stop(interaction) {
 	await destroy(interaction, server.get(interaction.member.guild.id));
-	await interaction.editReply({ content: 'Stopped playing!' });
+	await interaction.reply({ content: 'Stopped playing!' });
 	await wait(25000);
 	await interaction.deleteReply();
 }
@@ -75,14 +63,25 @@ async function connect(user) {
 async function start(interaction, url) {
 	const construct = server.get(interaction.member.guild.id);
 	const info = await ytdl.getBasicInfo(url);
+	await interaction.reply({ content: `Currently playing: ${info.videoDetails.title}` });
 	construct.resource = createAudioResource(await ytdl(url, { highWaterMark: 1 << 25, filter: 'audioonly' }));
 	construct.connection.subscribe(construct.player);
 	construct.player.play(construct.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
-	await interaction.channel.send({ content: `Currently playing: ${info.videoDetails.title}` })
-		.then(msg => {
-			setTimeout(() => msg.delete(), 25000);
-		});
+	await wait(25000);
+	await interaction.deleteReply();
+	construct.player.on(AudioPlayerStatus.Idle, async () => {
+		const songs = construct.queue;
+		console.log(songs);
+		if (songs.length > 0) {
+			await start(interaction, songs[0].url);
+			songs.shift();
+		}
+		await destroy(interaction);
+	});
+	construct.player.on('error', error => {
+		console.error(error);
+	});
 }
 
 async function destroy(interaction) {
@@ -101,7 +100,7 @@ async function addQueue(interaction, url) {
 		title: info.videoDetails.title,
 	};
 	construct.queue.push(queue);
-	await interaction.editReply({ content: `Added to queue ${info.videoDetails.title}` });
+	await interaction.reply({ content: `Added to queue ${info.videoDetails.title}` });
 	await wait(10000);
 	await interaction.deleteReply();
 }
@@ -112,15 +111,15 @@ async function skip(interaction) {
 	if (songs.length > 0) {
 		start(interaction, songs[0].url);
 		songs.shift();
-		await interaction.channel.send({ content: 'Skipped!' })
+		await interaction.reply({ content: 'Skipped!' })
 			.then(msg => {
 				setTimeout(() => msg.delete(), 25000);
 			});
 		return;
 	}
-	await interaction.channel.send({ content: 'Nothing else in queue' })
+	await interaction.reply({ content: 'Nothing else in queue' })
 		.then(msg => {
 			setTimeout(() => msg.delete(), 25000);
 		});
-	destroy();
+	await destroy();
 }

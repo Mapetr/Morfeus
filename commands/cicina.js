@@ -5,6 +5,6 @@ module.exports = {
 		.setName('cicina')
 		.setDescription('Measure your cicina size'),
 	async execute(interaction) {
-		interaction.editReply({ content: `Tvoje cicina je hluboka ${Math.floor(Math.random() * (30 - 1) + 1)} cm` });
+		interaction.reply({ content: `Tvoje cicina je hluboka ${Math.floor(Math.random() * (30 - 1) + 1)} cm` });
 	},
 };

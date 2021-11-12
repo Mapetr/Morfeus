@@ -7,7 +7,7 @@
   "author": "Petr Mácha <info@mapetr.cz>",
   "license": "MIT",
   "scripts": {
-    "build": "./node_modules/.bin/pkg -t latest index.js"
+    "lint": "./node_modules/.bin/eslint --format ./node_modules/eslint-teamcity/index.js ."
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
@@ -21,17 +21,17 @@
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "libsodium-wrappers": "^0.7.9",
+    "node-downloader-helper": "^1.0.19",
     "pkg": "^5.4.1",
+    "redis": "^4.0.0-rc.3",
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.7",
+    "waifu.pics-wrapper": "^1.0.0",
     "ytdl-core": "^4.9.1",
     "ytdl-core-discord": "amishshah/ytdl-core-discord#dependabot/npm_and_yarn/ytdl-core-4.9.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-teamcity": "4.0.0"
-  },
-  "scripts": {
-    "lint": "./node_modules/.bin/eslint --format ./node_modules/eslint-teamcity/index.js ."
   }
 }
