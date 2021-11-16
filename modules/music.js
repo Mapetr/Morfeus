@@ -63,19 +63,16 @@ async function connect(user) {
 async function start(interaction, url) {
 	const construct = server.get(interaction.member.guild.id);
 	const info = await ytdl.getBasicInfo(url);
-	await interaction.reply({ content: `Currently playing: ${info.videoDetails.title}` });
 	construct.resource = createAudioResource(await ytdl(url, { highWaterMark: 1 << 25, filter: 'audioonly' }));
 	construct.connection.subscribe(construct.player);
 	construct.player.play(construct.resource);
 	interaction.client.user.setActivity(`/play | ${info.videoDetails.title}`, { type: 'LISTENING' });
-	await wait(25000);
-	await interaction.deleteReply();
 	construct.player.on(AudioPlayerStatus.Idle, async () => {
 		const songs = construct.queue;
-		console.log(songs);
 		if (songs.length > 0) {
 			await start(interaction, songs[0].url);
 			songs.shift();
+			return;
 		}
 		await destroy(interaction);
 	});
