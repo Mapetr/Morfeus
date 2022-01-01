@@ -7,6 +7,11 @@ module.exports = {
 		.setName('nekogif')
 		.setDescription('Cute gifs of nekos only here'),
 	async execute(interaction) {
-		interaction.reply({ files: [await nsfw.nekoGif()] });
+		if (interaction.channel.nsfw == true) {
+			interaction.reply({ files: [await nsfw.nekoGif()] });
+		}
+		else {
+			interaction.reply({ content: 'Only NSFW channel' });
+		}
 	},
 };

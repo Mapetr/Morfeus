@@ -17,6 +17,7 @@
     "ansi-regex": "5.0.1",
     "bufferutil": "^4.0.5",
     "discord-api-types": "^0.23.1",
+    "discord-player": "^5.2.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
@@ -28,7 +29,7 @@
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.7",
     "waifu.pics-wrapper": "^1.0.0",
-    "ytdl-core": "^4.9.1",
+    "ytdl-core": "^4.9.2",
     "ytdl-core-discord": "amishshah/ytdl-core-discord#dependabot/npm_and_yarn/ytdl-core-4.9.0"
   },
   "devDependencies": {

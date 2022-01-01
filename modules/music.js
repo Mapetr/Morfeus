@@ -110,13 +110,13 @@ async function skip(interaction) {
 		songs.shift();
 		await interaction.reply({ content: 'Skipped!' })
 			.then(msg => {
-				setTimeout(() => msg.delete(), 25000);
+				setTimeout(() => msg.deleteReply(), 25000);
 			});
 		return;
 	}
 	await interaction.reply({ content: 'Nothing else in queue' })
 		.then(msg => {
-			setTimeout(() => msg.delete(), 25000);
+			setTimeout(() => msg.deleteReply(), 25000);
 		});
 	await destroy();
 }
