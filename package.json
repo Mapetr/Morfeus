@@ -1,39 +1,33 @@
 {
   "name": "Morfeus",
   "version": "1.0.0",
-  "description": "A dicord bot",
+  "description": "Discord bot",
   "main": "index.js",
   "repository": "https://github.com/Mapetr/Morfeus.git",
-  "author": "Petr Mácha <info@mapetr.cz>",
-  "license": "MIT",
-  "scripts": {
-    "lint": "./node_modules/.bin/eslint --format ./node_modules/eslint-teamcity/index.js ."
-  },
+  "author": "Petr <info@mapetr.cz>",
+  "license": "GPLv3",
+  "private": false,
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
-    "@discordjs/opus": "^0.6.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "@discordjs/voice": "^0.6.0",
-    "ansi-regex": "5.0.1",
-    "bufferutil": "^4.0.5",
-    "discord-api-types": "^0.23.1",
-    "discord-player": "^5.2.0",
-    "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0",
-    "ffmpeg-static": "^4.4.0",
-    "libsodium-wrappers": "^0.7.9",
-    "nekos.life": "^2.0.7",
-    "node-downloader-helper": "^1.0.19",
-    "pkg": "^5.4.1",
-    "redis": "^4.0.0-rc.3",
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/rest": "^0.3.0",
+    "@discordjs/voice": "^0.8.0",
+    "@sentry/node": "^6.17.7",
+    "@sentry/tracing": "^6.17.7",
+    "bufferutil": "^4.0.6",
+    "discord-api-types": "^0.27.0",
+    "discord-ytdl-core": "^5.0.4",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "erlpack": "^0.1.4",
+    "eslint-plugin-import": "2.25.2",
     "sodium": "^3.0.2",
-    "utf-8-validate": "^5.0.7",
-    "waifu.pics-wrapper": "^1.0.0",
-    "ytdl-core": "^4.9.2",
-    "ytdl-core-discord": "amishshah/ytdl-core-discord#dependabot/npm_and_yarn/ytdl-core-4.9.0"
+    "utf-8-validate": "^5.0.8",
+    "ytdl-core": "^4.10.1",
+    "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-teamcity": "4.0.0"
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0"
   }
 }
