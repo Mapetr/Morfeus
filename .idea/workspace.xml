@@ -4,35 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9774737c-6e3b-4f72-8c0f-837f779298cb" name="Changes" comment="music needs more work">
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/node.js.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Morfeus.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/cicina.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/neko.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/nekogif.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/pero.js" beforeDir="false" />
+    <list default="true" id="a701b7ed-b651-4fb4-8f5d-c50f751c567e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/Morfeus.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/skip.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/stop.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commands/play.js" beforeDir="false" afterPath="$PROJECT_DIR$/commands/play.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/profile.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/queue.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/restart.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/skip.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/stop.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands/waifu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy_commands.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.jsc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/music.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parse_waifus.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/waifus.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +28,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -51,16 +35,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/index.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/commands/play.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.eslintrc.json" root0="FORCE_HIGHLIGHTING" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="1zzFmA4En6XcTPBzqG4ZVmFgpn0" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectId" id="255tlwzkTqpbNR5Qkx1kRRAhFGI" />
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -68,63 +47,25 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="advanced.settings" />
   </component>
   <component name="RunManager">
-    <configuration name="index.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="index.js" working-dir="$PROJECT_DIR$">
+    <configuration name="index.js" type="NodeJSConfigurationType" path-to-js-file="index.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9774737c-6e3b-4f72-8c0f-837f779298cb" name="Changes" comment="" />
-      <created>1635143168784</created>
+      <changelist id="a701b7ed-b651-4fb4-8f5d-c50f751c567e" name="Changes" comment="" />
+      <created>1644828930790</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1635143168784</updated>
-      <workItem from="1635143171912" duration="160000" />
-      <workItem from="1635143348449" duration="609000" />
-      <workItem from="1635343681881" duration="14000" />
-      <workItem from="1635524096828" duration="1028000" />
-      <workItem from="1635525369811" duration="453000" />
-      <workItem from="1635526266061" duration="25000" />
-      <workItem from="1635533872603" duration="5748000" />
-      <workItem from="1635876773766" duration="2570000" />
-      <workItem from="1635973001234" duration="561000" />
-      <workItem from="1636568650242" duration="30660000" />
-      <workItem from="1636734136696" duration="6173000" />
-      <workItem from="1638633265723" duration="41000" />
-      <workItem from="1639254441301" duration="1947000" />
-      <workItem from="1640968008999" duration="1355000" />
-      <workItem from="1640998910578" duration="4232000" />
-      <workItem from="1644183777171" duration="984000" />
-      <workItem from="1644184784958" duration="913000" />
-      <workItem from="1644185719341" duration="559000" />
-      <workItem from="1644186301723" duration="1726000" />
-      <workItem from="1644514851314" duration="722000" />
-      <workItem from="1644529617587" duration="6900000" />
-      <workItem from="1644681155605" duration="16340000" />
-      <workItem from="1644776773855" duration="4786000" />
-      <workItem from="1644786254319" duration="124000" />
-      <workItem from="1644786400914" duration="719000" />
-      <workItem from="1644787386650" duration="18000" />
-      <workItem from="1644790479109" duration="934000" />
-      <workItem from="1644794507666" duration="1000" />
-      <workItem from="1644824465157" duration="81000" />
-      <workItem from="1644824564355" duration="373000" />
-      <workItem from="1644824952568" duration="43000" />
+      <updated>1644828930790</updated>
+      <workItem from="1644828932932" duration="7476000" />
+      <workItem from="1644865772706" duration="10056000" />
     </task>
-    <task id="LOCAL-00001" summary="music needs more work">
-      <created>1637092311492</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1637092311492</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,12 +84,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="still waifus need work" />
-    <MESSAGE value="music needs more work" />
-    <option name="LAST_COMMIT_MESSAGE" value="music needs more work" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>

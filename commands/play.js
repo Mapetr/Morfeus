@@ -4,11 +4,12 @@ const ytdlcore = require('ytdl-core');
 const {
 	joinVoiceChannel,	createAudioPlayer, NoSubscriberBehavior,
 	createAudioResource,
-	StreamType,
+	AudioPlayerStatus,
 } = require('@discordjs/voice');
-//const server = require('../index');
-const server = new Map();
+const wait = require('util').promisify(setTimeout);
+const { server, sentry } = require('../index');
 
+let player;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('play')
@@ -16,67 +17,88 @@ module.exports = {
 		.addStringOption((option) => option.setName('url')
 			.setDescription('URL of the song')
 			.setRequired(true)),
-	async execute(interaction, Sentry) {
+	async execute(interaction) {
 		const url = interaction.options.getString('url');
-		if (!ytdlcore.validateURL(url)) return interaction.reply('Not a valid url');
-		if (!interaction.member.voice.channel) return interaction.reply('You\'re not in a voice channel');
+		if (!ytdlcore.validateURL(url)) return interaction.reply('Not a valid url', { ephemeral: true });
+		if (!interaction.member.voice.channel) return interaction.reply('You\'re not in a voice channel', { ephemeral: true });
 		const info = await ytdlcore.getInfo(url);
 		if (server.has(interaction.guildId)) {
-			let temp = server.get(interaction.guildId);
-			if (interaction.member.voice.guildId !== temp.voice) return interaction.reply('You\'re not in the same voice channel');
+			const temp = server.get(interaction.guildId);
+			if (interaction.member.voice.channel.id !== temp.voice) return interaction.reply('You\'re not in the same voice channel', { ephemeral: true });
 			temp.queue.push(url);
-			return interaction.reply(`${info.videoDetails.title} has been added to queue`);
+			await interaction.reply(`${info.videoDetails.title} has been added to queue`);
+			await wait(20000);
+			return interaction.deleteReply();
 		}
 		const connection = joinVoiceChannel({
 			channelId: interaction.member.voice.channel.id,
 			guildId: interaction.guildId,
 			adapterCreator: interaction.guild.voiceAdapterCreator,
 		});
-		connection.subscribe(player);
 		let temp = server.get(interaction.guildId);
 		temp = {
-			voice: interaction.member.voice.channelId,
+			voice: interaction.member.voice.channel.id,
 			queue: [],
 			loop: false,
-		}
+		};
 		server.set(interaction.guildId, temp);
+		this.play(url, interaction, info, connection);
 		return false;
 	},
-	async play(url) {
-		const stream = ytdl(url, {
+	async play(url, interaction, info, connection) {
+		const stream = await ytdl(url, {
 			filter: 'audioonly',
-			opusEncoded: false,
-			fmt: 's16le',
+			fmt: 'mp3',
 			// eslint-disable-next-line no-bitwise
 			highWaterMark: 1 << 25,
 		})
 			.on('error', (err) => {
 				console.error(err);
-				Sentry.captureException(err);
+				sentry.captureException(err);
 			});
-		const player = createAudioPlayer({
+		player = createAudioPlayer({
 			behaviors: {
 				noSubscriber: NoSubscriberBehavior.Stop,
 			},
 		});
-		const resource = createAudioResource(stream, {
-			inputType: StreamType.Raw,
-		});
+		const resource = createAudioResource(stream);
+		await player.play(resource);
+		await connection.subscribe(player);
 		player.on('error', (err) => {
 			console.error(err);
-			Sentry.captureException(err);
+			sentry.captureException(err);
 			connection.destroy();
 		});
-		player.on('finish', () => {
-			let temp = server.get(interaction.guildId);
-			if (temp.loop) {
-
+		player.on(AudioPlayerStatus.Idle, async () => {
+			const temp = server.get(interaction.guildId);
+			if (temp === undefined) {
+				player.stop();
 			}
+			if (temp.loop) {
+				this.play(url, interaction, await ytdlcore.getInfo(temp.queue[0]), connection);
+				return;
+			}
+			if (temp.queue.length >= 1) {
+				this.play(temp.queue[0], interaction, await ytdlcore.getInfo(temp.queue[0]), connection);
+				temp.queue.shift();
+				return;
+			}
+			stream.
 			server.delete(interaction.guildId);
 			connection.destroy();
 		});
-		interaction.reply(`Started playing: ${info.videoDetails.title}`);
-		player.play(resource);
-		return player;
-	}
+		if (!interaction.replied) {
+			interaction.reply(`Started playing: ${info.videoDetails.title}`);
+			await wait(20000);
+			await interaction.deleteReply();
+		}
+		else {
+			const msg = await interaction.channel.send(`Started playing: ${info.videoDetails.title}`);
+			await wait(20000);
+			await msg.delete();
+		}
+	},
+	skip() {
+		player.stop();
+	},
 };
