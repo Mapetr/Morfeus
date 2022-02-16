@@ -1,5 +1,5 @@
 {
-  "name": "Morfeus",
+  "name": "morfeus",
   "version": "1.0.0",
   "description": "Discord bot",
   "main": "index.js",
@@ -22,6 +22,7 @@
     "erlpack": "^0.1.4",
     "eslint-plugin-import": "2.25.2",
     "pokedex-promise-v2": "^4.0.0",
+    "redis": "^4.0.3",
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.8",
     "ytdl-core": "^4.10.1",

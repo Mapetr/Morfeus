@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a701b7ed-b651-4fb4-8f5d-c50f751c567e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Morfeus.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commands/skip.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commands/stop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/banMusic.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commands/play.js" beforeDir="false" afterPath="$PROJECT_DIR$/commands/play.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/skip.js" beforeDir="false" afterPath="$PROJECT_DIR$/commands/skip.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/stop.js" beforeDir="false" afterPath="$PROJECT_DIR$/commands/stop.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
@@ -38,6 +33,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="255tlwzkTqpbNR5Qkx1kRRAhFGI" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -47,8 +45,13 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RunManager">
     <configuration name="index.js" type="NodeJSConfigurationType" path-to-js-file="index.js" working-dir="$PROJECT_DIR$">
@@ -64,7 +67,10 @@
       <option name="presentableId" value="Default" />
       <updated>1644828930790</updated>
       <workItem from="1644828932932" duration="7476000" />
-      <workItem from="1644865772706" duration="10056000" />
+      <workItem from="1644865772706" duration="12188000" />
+      <workItem from="1645005369088" duration="1480000" />
+      <workItem from="1645013531799" duration="7556000" />
+      <workItem from="1645040234125" duration="1291000" />
     </task>
     <servers />
   </component>

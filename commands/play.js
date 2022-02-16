@@ -7,9 +7,11 @@ const {
 	AudioPlayerStatus,
 } = require('@discordjs/voice');
 const wait = require('util').promisify(setTimeout);
-const { server, sentry } = require('../index');
+const { server } = require('../index');
+const utils = require('../utils');
 
 let player;
+let sentry;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('play')
@@ -17,16 +19,21 @@ module.exports = {
 		.addStringOption((option) => option.setName('url')
 			.setDescription('URL of the song')
 			.setRequired(true)),
-	async execute(interaction) {
+	async execute(interaction, sentryu, transaction) {
+		sentry = sentryu;
+		if (await utils.checkBlocked(interaction.guildId, interaction.member.id)) {
+			await interaction.deleteReply();
+			transaction.finish();
+		}
 		const url = interaction.options.getString('url');
-		if (!ytdlcore.validateURL(url)) return interaction.reply('Not a valid url', { ephemeral: true });
-		if (!interaction.member.voice.channel) return interaction.reply('You\'re not in a voice channel', { ephemeral: true });
+		if (!ytdlcore.validateURL(url)) return interaction.reply({ content: 'Not a valid url', ephemeral: true });
+		if (!interaction.member.voice.channel) return interaction.reply({ content: 'You\'re not in a voice channel', ephemeral: true });
 		const info = await ytdlcore.getInfo(url);
 		if (server.has(interaction.guildId)) {
 			const temp = server.get(interaction.guildId);
-			if (interaction.member.voice.channel.id !== temp.voice) return interaction.reply('You\'re not in the same voice channel', { ephemeral: true });
+			if (interaction.member.voice.channel.id !== temp.voice) return interaction.reply({ content: 'You\'re not in the same voice channel', ephemeral: true });
 			temp.queue.push(url);
-			await interaction.reply(`${info.videoDetails.title} has been added to queue`);
+			await interaction.reply({ content: `${info.videoDetails.title} has been added to queue` });
 			await wait(20000);
 			return interaction.deleteReply();
 		}
@@ -43,6 +50,7 @@ module.exports = {
 		};
 		server.set(interaction.guildId, temp);
 		this.play(url, interaction, info, connection);
+		transaction.finish();
 		return false;
 	},
 	async play(url, interaction, info, connection) {
@@ -83,12 +91,11 @@ module.exports = {
 				temp.queue.shift();
 				return;
 			}
-			stream.
 			server.delete(interaction.guildId);
 			connection.destroy();
 		});
 		if (!interaction.replied) {
-			interaction.reply(`Started playing: ${info.videoDetails.title}`);
+			interaction.reply({ content: `Started playing: ${info.videoDetails.title}` });
 			await wait(20000);
 			await interaction.deleteReply();
 		}

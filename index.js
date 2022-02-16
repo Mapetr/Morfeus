@@ -56,13 +56,20 @@ for (const file of commandFiles) {
 
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
+	const transaction = Sentry.startTransaction({
+		op: 'transaction',
+		name: interaction.commandName,
+	});
+	Sentry.configureScope((scope) => {
+		scope.setSpan(transaction);
+	});
 
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
 
 	try {
-		await command.execute(interaction, Sentry);
+		await command.execute(interaction, Sentry, transaction);
 	}
 	catch (error) {
 		console.error(error);
