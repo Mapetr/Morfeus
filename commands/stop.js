@@ -7,7 +7,7 @@ module.exports = {
 		.setName('stop')
 		.setDescription('Stop!'),
 	async execute(interaction, sentry, transaction) {
-		if (await utils.checkBlocked(interaction.guildId, interaction.member.id)) {
+		if (await utils(interaction.guildId, interaction.member.id)) {
 			await interaction.deleteReply();
 			transaction.finish();
 		}

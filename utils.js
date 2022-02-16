@@ -1,7 +1,7 @@
 const { createClient } = require('redis');
 const { sentry } = require('./index');
 
-async function checkBlocked(guildId, memberId) {
+module.exports = async function checkBlocked(guildId, memberId) {
 	const client = createClient();
 	client.on('error', (err) => {
 		console.error(err);
@@ -13,5 +13,3 @@ async function checkBlocked(guildId, memberId) {
 	json = JSON.parse(json);
 	return json.blocked.includes(memberId);
 }
-
-module.exports = checkBlocked();
