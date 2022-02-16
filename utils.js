@@ -9,6 +9,7 @@ async function checkBlocked(guildId, memberId) {
 	});
 	await client.connect();
 	let json = await client.get(guildId);
+	if (json === null) return false;
 	json = JSON.parse(json);
 	return json.blocked.includes(memberId);
 }
