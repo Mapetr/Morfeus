@@ -1,11 +1,18 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { skip } = require('../modules/music.js');
+const { skip } = require('./play');
+const utils = require('../utils');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('skip')
-		.setDescription('Skip a song'),
-	async execute(interaction) {
-		skip(interaction);
+		.setDescription('Skips a song!'),
+	async execute(interaction, sentry, transaction) {
+		if (await utils(interaction.guildId, interaction.member.id)) {
+			await interaction.deleteReply();
+			transaction.finish();
+		}
+		skip();
+		interaction.reply({ content: 'Skipped' });
+		transaction.finish();
 	},
 };

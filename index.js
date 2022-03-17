@@ -1,37 +1,48 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { createClient } = require('redis');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 require('dotenv').config();
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+// Sentry.io
+const Sentry = require('@sentry/node');
+// const Tracing = require('@sentry/tracing');
+
+Sentry.init({
+	dsn: process.env.SENTRY_DSN,
+
+	// Set tracesSampleRate to 1.0 to capture 100%
+	// of transactions for performance monitoring.
+	// We recommend adjusting this value in production
+	tracesSampleRate: 1.0,
+});
+
+module.exports = {
+	server: new Map(),
+	sentry: Sentry,
+};
+
+const rest = new REST().setToken(process.env.TOKEN);
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
 
 const commands = [];
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
-const redis = createClient();
-redis.on('error', (err) => console.error(err));
-redis.connect();
-module.exports.redis = redis;
-
-module.exports.server = new Map();
-
+// eslint-disable-next-line no-restricted-syntax
 for (const file of commandFiles) {
+	// eslint-disable-next-line global-require,import/no-dynamic-require
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 }
-
-const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
 
 		await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENTID, process.env.GUILDID),
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
 			{ body: commands },
 		);
 
@@ -39,32 +50,56 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 	}
 	catch (error) {
 		console.error(error);
+		Sentry.captureException(error);
 	}
 })();
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
+	if (!interaction.isCommand()) return;
+	const transaction = Sentry.startTransaction({
+		op: 'transaction',
+		name: interaction.commandName,
+	});
+	Sentry.configureScope((scope) => {
+		scope.setSpan(transaction);
+	});
+
+	const command = client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
 	try {
-		if (!interaction.isCommand()) return;
-		if (interaction.user.bot) return;
-
-		const command = client.commands.get(interaction.commandName);
-
-		if (!command) return;
-
-		try {
-			await command.execute(interaction);
-		} catch (error) {
-			console.error(error);
-		}
+		await command.execute(interaction, Sentry, transaction);
 	}
-	catch (err) {
-		console.error(err);
+	catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		Sentry.captureException(error);
 	}
 });
 
-client.once('ready', c => {
-	console.log(`Ready! as ${c.user.tag}`);
-	c.user.setActivity('/play', { type: 'WATCHING' });
+client.once('ready', () => {
+	console.log('Ready!');
+});
+
+client.on('guildCreate', async (guild) => {
+	try {
+		console.log('Started refreshing application (/) commands.');
+
+		await rest.put(
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild.id),
+			{ body: commands },
+		);
+
+		console.log('Successfully reloaded application (/) commands.');
+	}
+	catch (error) {
+		Sentry.captureException(error);
+	}
+});
+
+client.on('error', (err) => {
+	Sentry.captureException(err);
 });
 
 client.login(process.env.TOKEN);
